@@ -1,8 +1,9 @@
 package configuration;
 
+import annotations.Column;
 import annotations.DefaultValue;
 import annotations.PrimaryKey;
-
+import sun.jvm.hotspot.oops.FieldType;
 import java.lang.reflect.Field;
 
 // done first part for table creating
@@ -24,40 +25,58 @@ public class ColumnCreator {
     }
 
     public static ColumnCreator makeFromField(Field field, String variants){
-        TypeOfColumn typeOfColumn = checkFieldType(field);
+        TypeOfColumn typeOfColumn = checkTypeOfField(field);
 
         ColumnCreator columnCreator = new ColumnCreator();
         columnCreator.typeOfColumn = typeOfColumn;
         columnCreator.nameOfColumn = field.getName();
         columnCreator.isPrimaryKey = field.isAnnotationPresent(PrimaryKey.class);
         columnCreator.getDefaultValue = field.isAnnotationPresent(DefaultValue.class);
-        //columnCreator = checkAnnotation (field, ColumnCreator);
+        columnCreator = verifyAnnot (field, columnCreator);
 
         return columnCreator;
     }
 
-    private static TypeOfColumn checkFieldType(Field field) {
+    private static TypeOfColumn checkTypeOfField(Field field) {
         Class fieldType = field.getType();
-        TypeOfColumn columnType;
+        TypeOfColumn typeOfColumn;
 
         if (fieldType == Boolean.TYPE || (fieldType == Boolean.class)) {
-            columnType = TypeOfColumn.BOOLEAN;
+            typeOfColumn = TypeOfColumn.BOOLEAN;
         } else if ((fieldType == Integer.TYPE) || (fieldType == Integer.class)) {
-            columnType = TypeOfColumn.INTEGER;
+            typeOfColumn = TypeOfColumn.INTEGER;
         } else if (fieldType == Double.TYPE || fieldType == Double.class) {
-            columnType = TypeOfColumn.DOUBLE;
+            typeOfColumn = TypeOfColumn.DOUBLE;
         } else if (fieldType == Float.TYPE || fieldType == Float.class) {
-            columnType = TypeOfColumn.FLOAT;
+            typeOfColumn = TypeOfColumn.FLOAT;
         } else if (fieldType == Character.TYPE || fieldType == Character.class) {
-            columnType = TypeOfColumn.CHAR;
-        } else if (fieldType == String.class) {
-            columnType = TypeOfColumn.VARCHAR;
-        } else {
-            return null;
+                typeOfColumn = TypeOfColumn.CHAR;
         }
-        return columnType;
+        else if (fieldType == String.class){
+                typeOfColumn = TypeOfColumn.VARCHAR;
+        } else {
+            return  null;
+        }
+        return typeOfColumn;
+    }
 
-
+    private static ColumnCreator verifyAnnot (Field field, ColumnCreator columnCreator){
+        TypeOfColumn typeOfColumn = checkTypeOfField(field);
+        if ( columnCreator.getDefaultValue){
+            DefaultValue defaultValueForCheck = field.getAnnotation(DefaultValue.class);
+            columnCreator.defaultValue = defaultValueForCheck.value();
+        }
+        if (typeOfColumn == TypeOfColumn.VARCHAR){
+            columnCreator.typeOfColumn = TypeOfColumn.TEXT;
+        }
+        if (field.isAnnotationPresent(annotations.Column.class)){
+            Column nameOfColumn = field.getAnnotation(Column.class);
+            String name = nameOfColumn.value();
+            if (!name.trim().isEmpty()){
+                columnCreator.nameOfColumn = name;
+            }
+        }
+        return columnCreator;
     }
 
 }
