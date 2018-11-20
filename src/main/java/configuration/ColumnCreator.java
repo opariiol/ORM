@@ -3,7 +3,6 @@ package configuration;
 import annotations.Column;
 import annotations.DefaultValue;
 import annotations.PrimaryKey;
-import sun.jvm.hotspot.oops.FieldType;
 import java.lang.reflect.Field;
 
 // done first part for table creating
@@ -77,6 +76,20 @@ public class ColumnCreator {
             }
         }
         return columnCreator;
+    }
+
+    public String toString (){
+        StringBuilder resultString = new StringBuilder();
+        resultString.append("`");
+        resultString.append(nameOfColumn);
+        resultString.append("`");
+        resultString.append(typeOfColumn.toString());
+        if (typeOfColumn == TypeOfColumn.CHAR){
+            resultString.append("(1)");
+        } else if (typeOfColumn == TypeOfColumn.VARCHAR){
+            resultString.append("()");
+        }
+        return resultString.toString();
     }
 
 }
