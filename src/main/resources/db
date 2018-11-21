@@ -1,0 +1,4 @@
+jdbc.url=jdbc:mysql://localhost/test?serverTimezone=Europe/Moscow&useSSL=false
+jdbc.username=root
+jdbc.password=
+jdbc.driver = com.mysql.cj.jdbc.Driver

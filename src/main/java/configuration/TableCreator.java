@@ -2,7 +2,7 @@ package configuration;
 
 import annotations.*;
 
-// done first part for table creating
+// done second part for table creating
 
 public class TableCreator{
 
