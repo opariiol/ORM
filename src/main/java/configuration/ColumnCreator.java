@@ -5,8 +5,6 @@ import annotations.DefaultValue;
 import annotations.PrimaryKey;
 import java.lang.reflect.Field;
 
-// done first part for table creating
-
 public class ColumnCreator {
 
     public String nameOfColumn;

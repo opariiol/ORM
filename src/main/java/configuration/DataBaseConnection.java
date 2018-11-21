@@ -34,73 +34,10 @@ public class DataBaseConnection {
     }
 
     public void insertCOlumns(Object object) throws Exception{
-        new InsertColumns(connection,object).toPreparedStatement().executeUpdate();}
+        new InsertColumns(connection,object).toPreparedStatement().executeUpdate();
+    }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- /*  public Connection connect() throws ClassNotFoundException{
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = null;
-        try {
-            connection = DriverManager.getConnection(CONNECT_TO_DB, "root", "");
-            sout ("connect")
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return connection;
-    }
-
-
-
-
-
- static {
-        try {
-            getInitialConnectWithDB();
-            log.debug("Connection to database completed successful");
-        } catch (SQLException | IOException e) {
-            log.error(e.getMessage());
-        }
-    }*/
-
-   /* public static Connection getConnect() throws SQLException, IOException {
-        return DriverManager.getConnection(CONNECT_TO_DB + dataBaseName, dataBaseLogin, dataBasePassword);
-    }
-
-    private static void getInitialConnectWithDB () throws SQLException, IOException {
-        getInfoFromProperties();
-
-            try (Connection connectionForCreateDbIfNotExists = DriverManager.getConnection(String.valueOf(
-                    new StringBuilder("jdbc:mysql://localhost/?user=").append(dataBaseLogin)
-                            .append("&password=").append(dataBasePassword)))) {
-
-                Statement statement = connectionForCreateDbIfNotExists.createStatement();
-                statement.executeUpdate(CREATE_DB + dataBaseName);
-            }
-    }
-
-
-
-    private static void getInfoFromProperties () throws IOException {
-        Properties properties = new Properties();
-        properties.load(new FileInputStream(new File("src/main/resources/db")));
-        dataBaseLogin = properties.get("login").toString();
-        dataBasePassword = properties.get("password").toString();
-        dataBaseName = properties.get("dbName").toString();
-    }*/
 
 
 
